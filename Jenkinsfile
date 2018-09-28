@@ -10,7 +10,7 @@ pipeline
 
     }
 
-    agent { ecs_slave }
+    agent docker
 
     environment
 
