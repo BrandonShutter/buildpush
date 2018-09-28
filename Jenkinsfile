@@ -36,7 +36,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'echo "FROM ($IMAGE) > Dockerfile'
+        sh 'echo "FROM ($IMAGE)" > Dockerfile'
         sh 'echo "MAINTAINER Brandon Shutter <brandon.p.shutter@nasa.gov>" >> Dockerfile'
         sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
         sh 'docker build --no-cache -t dev/ubuntubuilt .'
