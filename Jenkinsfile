@@ -20,12 +20,12 @@ pipeline {
     stage('Build Prep') {
       script
       {
-        calculate GIT lastest commit short-hash
+        // calculate GIT lastest commit short-hash
         gitCommitHash = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
         shortCommitHash = gitCommitHash.take(7)
-        calculate a sample version tag
+        // calculate a sample version tag
         VERSION = shortCommitHash
-        set the build display name
+        // set the build display name
         currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
         IMAGE = "$PROJECT:$VERSION"
       }
