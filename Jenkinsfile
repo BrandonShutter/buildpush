@@ -44,26 +44,19 @@ pipeline {
     }
       stage('Scan') {
         steps {
-          twistlockScan ca: '', cert: '', \
-            compliancePolicy: 'warn', \
-            gracePeriodDays: 0, \
-            dockerAddress: 'unix:///var/run/docker.sock', \
-            ignoreImageBuildTime: false,
-            key: '', \
-            logLevel: 'true', \
-            policy: 'warn', \
-            repository: 'dev/ubuntubuilt', \
-            requirePackageUpdate: false, \
-            tag: 'test', \
-            timeout: 10
+          twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
+         dockerAddress: 'unix:///var/run/docker.sock', \
+         ignoreImageBuildTime: false, key: '', logLevel: 'true', \
+         policy: 'warn', repository: 'dev/ubuntubuilt', \
+         requirePackageUpdate: false, tag: 'test', timeout: 10
       }
     }
       stage('Publish to Twistlock') {
         steps {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-            logLevel: 'true', repository: 'dev/ubuntubuilt', tag: 'test', \
-            timeout: 10
+              logLevel: 'true', repository: 'dev/ubuntubuilt', tag: 'test', \
+                timeout: 10
         }
       }
       stage('Publish') {
