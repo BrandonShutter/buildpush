@@ -10,7 +10,7 @@ pipeline
 
     }
 
-    agent any
+    agent ecs_slave
 
     environment
 
