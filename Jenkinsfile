@@ -1,143 +1,29 @@
-pipeline
-
-{
-
-    options
-
-    {
-
-        buildDiscarder(logRotator(numToKeepStr: '3'))
-
-    }
-
-    agent any
-
-    environment
-
-    {
-
-        VERSION = 'latest'
-
-        PROJECT = 'hello-world'
-
-        IMAGE = 'hello-world:latest'
-
-        ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
-
-        ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
-
-    }
-
-    stages
-
-    {
-
-        stage('Build preparations')
-
-        {
-
-            steps
-
-            {
-
-                script
-
-                {
-
-                    // calculate GIT lastest commit short-hash
-
-                    gitCommitHash = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-
-                    shortCommitHash = gitCommitHash.take(7)
-
-                    // calculate a sample version tag
-
-                    VERSION = shortCommitHash
-
-                    // set the build display name
-
-                    currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
-
-                    IMAGE = "$PROJECT:$VERSION"
-
-                }
-
-            }
-
-        }
-
-        stage('Docker build')
-
-        {
-
-            steps
-
-            {
-
-                script
-
-                {
-
-                    // Build the docker image using a Dockerfile
-
-                    docker.build("$IMAGE")
-
-                }
-
-            }
-
-        }
-
-        stage('Docker push')
-
-        {
-
-            steps
-
-            {
-
-                script
-
-                {
-
-                    // login to ECR - for now it seems that that the ECR Jenkins plugin is not performing the login as expected. I hope it will in the future.
-
-                    // sh("eval \$(aws ecr get-login --no-include-email --region us-gov-west-1 | sed 's|https://||')")
-
-                    // Push the Docker image to ECR
-
-                    docker.withRegistry(ECRURL, ECRCRED)
-
-                    {
-
-                        docker.image(IMAGE).push()
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-
-    post
-
-    {
-
-        always
-
-        {
-
-            // make sure that the Docker image is removed
-
-            sh "docker rmi $IMAGE | true"
-
-        }
-
-    }
-
+node {
+   stage('Preparation') {
+       // for display purposes
+       echo "Preparing"
+   }
+
+   stage('Build') {
+       // Build an image for scanning
+       sh 'echo "FROM ubuntu:16.04" > Dockerfile'
+       sh 'echo "MAINTAINER Brandon Shutter <brandon.p.shutter@nasa.gov>" >> Dockerfile'
+       sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
+       sh 'docker build --no-cache -t dev/ubuntu:test .'
+   }
+
+   stage('Scan') {
+       twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
+         dockerAddress: 'unix:///var/run/docker.sock', \
+         ignoreImageBuildTime: false, key: '', logLevel: 'true', \
+         policy: 'warn', repository: 'dev/ubunty', \
+         requirePackageUpdate: false, tag: 'test', timeout: 10
+   }
+
+   stage('Publish') {
+       twistlockPublish ca: '', cert: '', \
+         dockerAddress: 'unix:///var/run/docker.sock', key: '', \
+         logLevel: 'true', repository: 'dev/ubuntu', tag: 'test', \
+         timeout: 10
+   }
 }
