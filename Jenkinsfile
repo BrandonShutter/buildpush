@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'ecs-slave' }
+  agent any
   environment {
     VERSION = 'latest'
     PROJECT = 'hello-world'
