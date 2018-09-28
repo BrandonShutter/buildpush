@@ -14,10 +14,13 @@ pipeline {
   }
   stages {
     stage('Preparation') {
+      steps {
         // for display purposes
         echo "Preparing"
+      }
     }
     stage('Build Prep') {
+      steps {
       script
       {
         // calculate GIT lastest commit short-hash
@@ -29,6 +32,8 @@ pipeline {
         currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
         IMAGE = "$PROJECT:$VERSION"
       }
+
+      }
     }
     stage('Build') {
       steps {
@@ -38,18 +43,22 @@ pipeline {
         sh 'docker build --no-cache -t ($BUILTIMAGE) .'
       }
       stage('Scan') {
+        steps {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
             dockerAddress: 'unix:///var/run/docker.sock', \
             ignoreImageBuildTime: false, key: '', logLevel: 'true', \
             policy: 'warn', repository: REPO, \
             requirePackageUpdate: false, tag: 'test', timeout: 10
       }
+              }
 
       stage('Publish to Twistlock') {
+        steps {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
             logLevel: 'true', repository: REPO, tag: 'test', \
             timeout: 10
+            }
       }
     }
     stage('Publish') {
