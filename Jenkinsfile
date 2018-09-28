@@ -5,7 +5,7 @@ pipeline {
     PROJECT = 'hello-world'
     IMAGE = 'ubuntu:latest'
     BUILTIMAGE = 'ubuntutest'
-    REPO = 'dev/ubuntu'
+    REPO = 'dev'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
     ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
   }
@@ -45,17 +45,17 @@ pipeline {
       stage('Scan') {
         steps {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
-            dockerAddress: 'unix:///var/run/docker.sock', \
-            ignoreImageBuildTime: false, key: '', logLevel: 'true', \
-            policy: 'warn', repository: REPO/BUILTIMAGE, \
-            requirePackageUpdate: false, tag: 'test', timeout: 10
+         dockerAddress: 'unix:///var/run/docker.sock', \
+         ignoreImageBuildTime: false, key: '', logLevel: 'true', \
+         policy: 'warn', repository: 'dev/ubuntutest', \
+         requirePackageUpdate: false, tag: 'test', timeout: 10
       }
     }
       stage('Publish to Twistlock') {
         steps {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-            logLevel: 'true', repository: REPO/BUILTIMAGE, tag: 'test', \
+            logLevel: 'true', repository: 'dev/ubuntutest', tag: 'test', \
             timeout: 10
         }
       }
@@ -65,7 +65,7 @@ pipeline {
             {
               docker.withRegistry(ECRURL, ECRCRED)
             {
-                docker.image(BUILTIMAGE).push()
+                docker.image('dev/ubuntutest').push()
             }
           }
         }
