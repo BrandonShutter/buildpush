@@ -24,7 +24,7 @@ pipeline
 
         ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
 
-        ECRCRED = 'ecr:us-gov-west:24902970-0840-4f85-bef2-a37dbd1883c0'
+        ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
 
     }
 
