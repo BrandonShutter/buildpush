@@ -44,6 +44,7 @@ pipeline {
     }
       stage('Scan') {
         steps {
+            script {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
          dockerAddress: 'unix:///var/run/docker.sock', \
          ignoreImageBuildTime: false, key: '', logLevel: 'true', \
@@ -51,12 +52,15 @@ pipeline {
          requirePackageUpdate: false, tag: 'test', timeout: 10
       }
     }
+    }
       stage('Publish to Twistlock') {
         steps {
+          script {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
               logLevel: 'true', repository: 'dev/ubuntubuilt', tag: 'test', \
                 timeout: 10
+        }
         }
       }
       stage('Publish') {
