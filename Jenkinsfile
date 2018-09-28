@@ -4,7 +4,7 @@ pipeline {
     VERSION = 'latest'
     PROJECT = 'hello-world'
     IMAGE = 'ubuntu:16.04'
-    BUILTIMAGE = 'dev/ubuntubuilt:test'
+    BUILTIMAGE = 'dev/ubuntubuilt'
     REPO = 'dev'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
     ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
@@ -39,7 +39,7 @@ pipeline {
         sh 'echo "FROM $IMAGE" > Dockerfile'
         sh 'echo "MAINTAINER Brandon Shutter <brandon.p.shutter@nasa.gov>" >> Dockerfile'
         sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
-        sh 'docker build --no-cache -t $BUILTIMAGE .'
+        sh 'docker build --no-cache -t $BUILTIMAGE:test .'
       }
     }
       stage('Scan') {
