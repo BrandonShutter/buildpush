@@ -42,6 +42,7 @@ pipeline {
         sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
         sh 'docker build --no-cache -t ($BUILTIMAGE) .'
       }
+    }
       stage('Scan') {
         steps {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
@@ -76,4 +77,3 @@ pipeline {
         }
       }
     }
-  }
