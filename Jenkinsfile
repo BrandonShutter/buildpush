@@ -45,17 +45,17 @@ pipeline {
       stage('Scan') {
         steps {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
-          dockerAddress: 'unix:///var/run/docker.sock', \
-          ignoreImageBuildTime: false, key: '', logLevel: 'true', \
-          policy: 'warn', repository: REPO, \
-          requirePackageUpdate: false, tag: 'test', timeout: 10
+            dockerAddress: 'unix:///var/run/docker.sock', \
+            ignoreImageBuildTime: false, key: '', logLevel: 'true', \
+            policy: 'warn', repository: REPO/BUILTIMAGE, \
+            requirePackageUpdate: false, tag: 'test', timeout: 10
       }
     }
       stage('Publish to Twistlock') {
         steps {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-            logLevel: 'true', repository: REPO, tag: 'test', \
+            logLevel: 'true', repository: REPO/BUILTIMAGE, tag: 'test', \
             timeout: 10
         }
       }
