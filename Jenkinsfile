@@ -3,7 +3,7 @@ pipeline {
   environment {
     VERSION = 'latest'
     PROJECT = 'hello-world'
-    IMAGE = 'ubuntu:latest'
+    IMAGE = 'ubuntu:16.04'
     BUILTIMAGE = 'dev/ubuntubuilt'
     REPO = 'dev'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
@@ -39,7 +39,7 @@ pipeline {
         sh 'echo "FROM ($IMAGE)" > Dockerfile'
         sh 'echo "MAINTAINER Brandon Shutter <brandon.p.shutter@nasa.gov>" >> Dockerfile'
         sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
-        sh 'docker build --no-cache -t dev/ubuntubuilt .'
+        sh 'docker build --no-cache -t ($BUILTIMAGE) .'
       }
     }
       stage('Scan') {
@@ -48,7 +48,7 @@ pipeline {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
          dockerAddress: 'unix:///var/run/docker.sock', \
          ignoreImageBuildTime: false, key: '', logLevel: 'true', \
-         policy: 'warn', repository: 'dev/ubuntubuilt', \
+         policy: 'warn', repository: BUILTIMAGE, \
          requirePackageUpdate: false, tag: 'test', timeout: 10
       }
     }
@@ -58,7 +58,7 @@ pipeline {
           script {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-              logLevel: 'true', repository: 'dev/ubuntubuilt', tag: 'test', \
+              logLevel: 'true', repository: BUILTIMAGE, tag: 'test', \
                 timeout: 10
         }
         }
