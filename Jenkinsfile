@@ -10,7 +10,7 @@ pipeline
 
     }
 
-    agent ecs_slave
+    agent { ecs_slave }
 
     environment
 
