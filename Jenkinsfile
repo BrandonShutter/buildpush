@@ -1,7 +1,8 @@
 pipeline {
   agent any
   environment {
-    IMAGE = 'ubuntu:16.04'
+    VERSION = 'latest'
+    PROJECT = 'hello-world'
     BUILTIMAGE = 'ubuntubuilt'
     REPO = 'ubuntubuilt'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
@@ -28,15 +29,15 @@ pipeline {
             VERSION = shortCommitHash
             // set the build display name
             currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
+            IMAGE = "$PROJECT:$VERSION"
           }
         }
     }
-    stage('Build') {
+    stage('Docker Build') {
       steps {
-        sh 'echo "FROM $IMAGE" > Dockerfile'
-        sh 'echo "MAINTAINER Brandon Shutter <brandon.p.shutter@nasa.gov>" >> Dockerfile'
-        sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
-        sh 'docker build --no-cache -t $BUILTIMAGE:$VERSION .'
+          script {
+            docker.build(BUILTIMAGE)
+          }
       }
     }
       stage('Scan') {
