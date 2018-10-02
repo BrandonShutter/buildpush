@@ -1,8 +1,7 @@
 pipeline {
   agent any
   environment {
-    REPO= 'dev'
-    BUILTIMAGE = 'dev/hello-world'
+    BUILTIMAGE = 'hello-world'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
     ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
   }
@@ -33,7 +32,7 @@ pipeline {
     stage('Docker Build') {
       steps {
           script {
-            docker.build(BUILTIMAGE)
+            docker.build(BUILTIMAGE + ':' + VERSION)
           }
       }
     }
@@ -43,7 +42,7 @@ pipeline {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
          dockerAddress: 'unix:///var/run/docker.sock', \
          ignoreImageBuildTime: false, key: '', logLevel: 'true', \
-         policy: 'warn', repository: 'dev/helloworld', \
+         policy: 'warn', repository: BUILTIMAGE, \
          requirePackageUpdate: false, tag: VERSION, timeout: 10
       }
     }
@@ -53,7 +52,7 @@ pipeline {
           script {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-              logLevel: 'true', repository: 'dev/helloworld', tag: VERSION, \
+              logLevel: 'true', repository: BUILTIMAGE, tag: VERSION, \
                 timeout: 10
         }
       }
