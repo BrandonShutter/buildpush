@@ -43,8 +43,8 @@ pipeline {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
          dockerAddress: 'unix:///var/run/docker.sock', \
          ignoreImageBuildTime: false, key: '', logLevel: 'true', \
-         policy: 'warn', repository: BUILTIMAGE, \
-         requirePackageUpdate: false, tag: VERSION, timeout: 10
+         policy: 'warn', repository: 'hello-world', \
+         requirePackageUpdate: false, tag: 'latest', timeout: 10
       }
     }
     }
@@ -53,7 +53,7 @@ pipeline {
           script {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-              logLevel: 'true', repository: BUILTIMAGE, tag: VERSION, \
+              logLevel: 'true', repository: 'hello-world', tag: 'latest', \
                 timeout: 10
         }
       }
