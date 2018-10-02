@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     REPO= 'dev'
-    BUILTIMAGE = 'hello-world'
+    BUILTIMAGE = 'dev/hello-world'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
     ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
   }
