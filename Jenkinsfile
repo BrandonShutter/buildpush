@@ -26,14 +26,13 @@ pipeline {
             VERSION = shortCommitHash
             // set the build display name
             currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
-            IMAGE = "$VERSION"
           }
         }
     }
     stage('Docker Build') {
       steps {
           script {
-            docker.build(BUILTIMAGE)
+            docker.build(BUILTIMAGE:VERSION)
           }
       }
     }
