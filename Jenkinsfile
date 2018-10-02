@@ -31,10 +31,10 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-          sh 'docker build --no-cache -t hello-world:latest .'
-          //script {
-            //docker.build(BUILTIMAGE + ':' + VERSION)
-          //}
+          // sh 'docker build --no-cache -t hello-world:latest .'
+          script {
+            docker.build(BUILTIMAGE + ':' + VERSION)
+          }
       }
     }
       stage('Scan') {
@@ -42,7 +42,7 @@ pipeline {
             script {
           twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
          dockerAddress: 'unix:///var/run/docker.sock', \
-         ignoreImageBuildTime: false, key: '', logLevel: 'true', \
+         ignoreImageBuildTime: true, key: '', logLevel: 'true', \
          policy: 'warn', repository: 'hello-world', \
          requirePackageUpdate: false, tag: 'latest', timeout: 10
       }
