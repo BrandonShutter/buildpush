@@ -61,8 +61,8 @@ pipeline {
               logLevel: 'true', repository: BUILTIMAGE, tag: 'test', \
                 timeout: 10
         }
-        }
       }
+    }
       stage('Publish') {
         steps {
           script
