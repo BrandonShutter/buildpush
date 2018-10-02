@@ -39,7 +39,7 @@ pipeline {
         sh 'echo "FROM $IMAGE" > Dockerfile'
         sh 'echo "MAINTAINER Brandon Shutter <brandon.p.shutter@nasa.gov>" >> Dockerfile'
         sh 'echo "RUN mkdir -p /tmp/test/dir" >> Dockerfile'
-        sh 'docker build --no-cache -t $BUILTIMAGE:test .'
+        sh 'docker build --no-cache -t $BUILTIMAGE:$VERSION .'
       }
     }
       stage('Scan') {
@@ -49,7 +49,7 @@ pipeline {
          dockerAddress: 'unix:///var/run/docker.sock', \
          ignoreImageBuildTime: false, key: '', logLevel: 'true', \
          policy: 'warn', repository: BUILTIMAGE, \
-         requirePackageUpdate: false, tag: 'test', timeout: 10
+         requirePackageUpdate: false, tag: VERSION, timeout: 10
       }
     }
     }
@@ -58,7 +58,7 @@ pipeline {
           script {
           twistlockPublish ca: '', cert: '', \
             dockerAddress: 'unix:///var/run/docker.sock', key: '', \
-              logLevel: 'true', repository: BUILTIMAGE, tag: 'test', \
+              logLevel: 'true', repository: BUILTIMAGE, tag: VERSION, \
                 timeout: 10
         }
       }
