@@ -31,7 +31,7 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-          sh 'docker build --no-cache -t $BUILTIMAGE:$VERSION .'
+          sh 'docker build --no-cache -t hello-world:latest .'
           //script {
             //docker.build(BUILTIMAGE + ':' + VERSION)
           //}
