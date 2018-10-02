@@ -1,9 +1,7 @@
 pipeline {
   agent any
   environment {
-    VERSION = 'latest'
-    PROJECT = 'hello-world'
-    BUILTIMAGE = 'ubuntubuilt'
+    BUILTIMAGE = 'hello-world'
     REPO = 'ubuntubuilt'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
     ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
@@ -29,7 +27,7 @@ pipeline {
             VERSION = shortCommitHash
             // set the build display name
             currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
-            IMAGE = "$PROJECT:$VERSION"
+            IMAGE = "$VERSION"
           }
         }
     }
