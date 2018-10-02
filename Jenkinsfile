@@ -4,7 +4,7 @@ pipeline {
     VERSION = 'latest'
     PROJECT = 'hello-world'
     IMAGE = 'ubuntu:16.04'
-    BUILTIMAGE = 'ubuntubuilt':VERSION
+    BUILTIMAGE = 'ubuntubuilt:latest'
     REPO = 'ubuntubuilt'
     ECRURL = 'https://644832730935.dkr.ecr.us-gov-west-1.amazonaws.com'
     ECRCRED = 'ecr:us-gov-west-1:svc-jenkins'
