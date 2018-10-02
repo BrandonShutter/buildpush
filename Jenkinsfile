@@ -31,9 +31,10 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-          script {
-            docker.build(BUILTIMAGE + ':' + VERSION)
-          }
+          sh 'docker build --no-cache -t $BUILTIMAGE:$VERSION .'
+          //script {
+            //docker.build(BUILTIMAGE + ':' + VERSION)
+          //}
       }
     }
       stage('Scan') {
