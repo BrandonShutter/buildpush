@@ -1,8 +1,6 @@
 pipeline {
   agent any
   environment {
-    VERSION = 'latest'
-    PROJECT = 'hello-world'
     IMAGE = 'ubuntu:16.04'
     BUILTIMAGE = 'ubuntubuilt'
     REPO = 'ubuntubuilt'
@@ -30,7 +28,6 @@ pipeline {
             VERSION = shortCommitHash
             // set the build display name
             currentBuild.displayName = "#${BUILD_ID}-${VERSION}"
-            IMAGE = "$PROJECT:$VERSION"
           }
         }
     }
