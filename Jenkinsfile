@@ -32,7 +32,7 @@ pipeline {
     stage('Docker Build') {
       steps {
           script {
-            docker.build(BUILTIMAGE:VERSION)
+            docker.build(BUILTIMAGE)
           }
       }
     }
