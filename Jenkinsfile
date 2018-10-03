@@ -35,7 +35,7 @@ pipeline {
                 }
             }
         }
-        stage('Scan') {
+        stage('Scan with Twistlock') {
             steps {
                 script {
                     twistlockScan ca: '', cert: '', compliancePolicy: 'warn', \
@@ -57,7 +57,7 @@ pipeline {
                 }
             }
         }
-        stage('Publish') {
+        stage('Push to ECR') {
             steps {
                 script {
                     docker.withRegistry(ECRURL, ECRCRED) {
@@ -66,8 +66,7 @@ pipeline {
                 }
             }
         }
-        // Deploy to ECS
-        stage('Deploy') {
+        stage('Deploy to ECS') {
             steps {
 
             }
